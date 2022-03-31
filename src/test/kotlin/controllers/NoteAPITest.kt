@@ -31,6 +31,7 @@ class NoteAPITest {
         populatedNotes!!.add(codeApp!!)
         populatedNotes!!.add(testApp!!)
         populatedNotes!!.add(swim!!)
+
     }
 
     @AfterEach
@@ -56,6 +57,7 @@ class NoteAPITest {
     @Test
     fun `adding a Note to an empty list adds to ArrayList`(){
         val newNote = Note("Study Lambdas", 1, "College", false)
+       // println(emptyNotes!!.numberOfNotes())
         assertEquals(0, emptyNotes!!.numberOfNotes())
         assertTrue(emptyNotes!!.add(newNote))
         assertEquals(1, emptyNotes!!.numberOfNotes())
