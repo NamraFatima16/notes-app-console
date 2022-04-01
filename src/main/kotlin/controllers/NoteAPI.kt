@@ -88,4 +88,30 @@ class NoteAPI {
         return activeNotes
     }
 
+    fun listNotesBySelectedPriority(priority: Int): String {
+        return if (numberOfNotesByPriority(priority) == 0) {
+            "No Notes of that priority"
+        } else {
+            var noteBySel = ""
+            for (i in notes.indices) {
+                if (notes[i].notePriority == priority) {
+                    noteBySel += "${i}: ${notes[i]}"
+                }
+            }
+            return noteBySel
+        }
+    }
+
+    fun numberOfNotesByPriority(priority: Int): Int {
+        //helper method to determine how many notes there are of a specific priority
+        var priNumber = 0
+        for(note in notes){
+            if(note.notePriority == priority){
+                priNumber++
+            }
+        }
+            return priNumber
+
+    }
+
 }
