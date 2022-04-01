@@ -119,7 +119,27 @@ class NoteAPITest {
             assertTrue(emptyNotes!!.listActiveNotes().lowercase().contains("no active notes stored"))
         }
 
+        @Test
+        fun `listNotesBySelectedPriority returns No Notes when ArrayList is empty`() {
+            assertEquals(0, emptyNotes!!.numberOfNotes())
+            assertTrue(emptyNotes!!.listNotesBySelectedPriority(1).lowercase().contains("no notes")
+            )
+        }
+        @Test
+        fun `listNotesBySelectedPriority returns no notes when no notes of that priority exist`() {
+            assertEquals(5, populatedNotes!!.numberOfNotes())
+            assertTrue(populatedNotes!!.listNotesBySelectedPriority(2).lowercase().contains("no notes"))
+        }
+        @Test
+        fun `listNotesBySelectedPriority returns notes of priority when arraylist have notes stored`(){
+            assertEquals(5,populatedNotes!!.numberOfNotes())
+            val notesString = populatedNotes!!.listNotesBySelectedPriority(4).lowercase()
+            assertTrue(notesString.contains("test app"))
+            assertTrue(notesString.contains("code app"))
+        }
+
+        }
+
+
     }
 
-
-}
