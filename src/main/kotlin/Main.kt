@@ -22,13 +22,25 @@ fun runMenu() {
         val option = mainMenu()
         when (option) {
             1  -> addNote()
-            2  -> listNotes()
+            2  -> runSubmenu()
             3  -> updateNote()
             4  -> deleteNote()
             5 -> archiveNote()
             20 -> save()
             21 -> load()
             0  -> exitApp()
+            else -> System.out.println("Invalid option entered: ${option}")
+        }
+    } while (true)
+}
+fun runSubmenu(){
+    do{
+        val option = subMenu()
+        when(option){
+            1 -> listNotes()
+            2 -> listActiveNotes()
+            3 -> listArchivedNote()
+            0 -> runMenu()
             else -> System.out.println("Invalid option entered: ${option}")
         }
     } while (true)
@@ -43,16 +55,33 @@ fun mainMenu() : Int {
          > ----------------------------------
          > | NOTE MENU                      |
          > |   1) Add a note                |
-         > |   2) List all notes            |
+         > |   2) List notes                |
          > |   3) Update a note             |
          > |   4) Delete a note             |
-         > |    5) Archive a note           |  
+         > |   5) Archive a note            |  
          > |   20) Save Notes               |
          > |   21) Load Notes               |
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
          > ==>> """.trimMargin(">"))
+}
+
+
+fun subMenu() : Int {
+    return readNextInt(""" 
+         > ----------------------------------
+         > |        NOTE KEEPER APP         |
+         > ----------------------------------
+         > | List Submenu                   |
+         > |   1) List all notes            |
+         > |   2) List active notes         |
+         > |   3) List archived notes       |
+         > ----------------------------------
+         > |   0) Return to main menu       |
+         > ----------------------------------
+         > ==>> """.trimMargin(">"))
+
 }
 
 fun addNote(){
@@ -150,6 +179,9 @@ fun archiveNote() {
             println("Archive NOT Successful")
         }
     }
+}
+fun listArchivedNote(){
+    println(noteAPI.listArchivedNotes())
 }
 
 fun exitApp(){
