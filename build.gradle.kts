@@ -30,4 +30,6 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:1.7.32")
     implementation("com.thoughtworks.xstream:xstream:1.4.18")
     implementation("org.codehaus.jettison:jettison:1.4.1")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.2")
+    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 }
