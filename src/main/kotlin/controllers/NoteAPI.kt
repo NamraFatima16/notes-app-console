@@ -2,9 +2,9 @@ package controllers
 
 import models.Note
 
-private var notes = ArrayList<Note>()
-class NoteAPI {
 
+class NoteAPI {
+    private var notes = ArrayList<Note>()
     fun add(note: Note): Boolean {
         return notes.add(note)
     }
@@ -35,17 +35,18 @@ class NoteAPI {
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
+
     fun listActiveNotes(): String {
-       return if(numberOfActiveNotes() == 0 ){
-           "No Active Notes Stored"
-       } else{
-         var listOfActNotes = ""
-         for(i in notes.indices){
-             if(!notes[i].isNoteArchived){
-                 listOfActNotes += "${i}: ${notes[i]} \n"
-             }
-         }
-           return listOfActNotes
+        return if(numberOfActiveNotes() == 0 ){
+            "No Active Notes Stored"
+        } else{
+            var listOfActNotes = ""
+            for(i in notes.indices){
+                if(!notes[i].isNoteArchived){
+                    listOfActNotes += "${i}: ${notes[i]} \n"
+                }
+            }
+            return listOfActNotes
         }
 
     }
