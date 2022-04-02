@@ -38,23 +38,12 @@ class NoteAPI(serializerType: Serializer) {
 
 
     fun listArchivedNotes(): String =
-        if (numberOfActiveNotes() == 0) "No Active Notes Stored"
+        if (numberOfArchivedNotes() == 0) "No Archived Notes Stored"
         else formatListString(notes.filter { note: Note -> note.isNoteArchived })
 
-    fun numberOfArchivedNotes(): Int {
-        return notes.stream()
-            .filter { note: Note -> note.isNoteArchived }
-            .count()
-            .toInt()
+    fun numberOfArchivedNotes(): Int = notes.count { note: Note -> note.isNoteArchived }
 
-    }
-
-    fun numberOfActiveNotes(): Int {
-        return notes.stream()
-            .filter { note: Note -> !note.isNoteArchived }
-            .count()
-            .toInt()
-    }
+    fun numberOfActiveNotes(): Int = notes.count { note: Note -> !note.isNoteArchived }
 
     fun listNotesBySelectedPriority(priority: Int):
             String =
@@ -62,31 +51,16 @@ class NoteAPI(serializerType: Serializer) {
         else formatListString(notes.filter { note: Note -> note.notePriority == priority })
 
 
-    fun numberOfNotesByPriority(priority: Int): Int {
-        //helper method to determine how many notes there are of a specific priority
-        return notes.stream()
-            .filter { note: Note -> note.notePriority == priority }
-            .count()
-            .toInt()
-
-
-    }
+    fun numberOfNotesByPriority(priority: Int): Int = notes.count { note: Note -> note.notePriority == priority }
 
     fun listNotesByCategory(category: String):
 
             String =
         if (numberOfNotesByCategory(category) == 0) "No Notes of that category"
-        else formatListString(notes.filter { note: Note -> note.noteCategory == category })
+        else formatListString(notes.filter { note: Note -> note.noteCategory.equals(category,true)})
 
 
-    fun numberOfNotesByCategory(category: String): Int {
-        //number of notes in a specific category
-
-        return notes.stream()
-            .filter { note: Note -> note.noteCategory.equals(category, true) }
-            .count()
-            .toInt()
-    }
+    fun numberOfNotesByCategory(category: String): Int = notes.count { note: Note -> note.noteCategory.equals(category,true)}
 
     fun deleteNote(indexToDelete: Int): Note? {
         return if (isValidListIndex(indexToDelete, notes)) {
