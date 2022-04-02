@@ -11,14 +11,14 @@ import java.lang.Exception
 class YAMLSerializer(private val file: File) : Serializer {
     @Throws(Exception::class)
     override fun read(): Any {
-        val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
+        val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule().findAndRegisterModules()
         val obj: List<Note> = mapper.readValue(file)
         return obj
     }
 
     @Throws(Exception::class)
     override fun write(obj: Any?) {
-        val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
+        val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule().findAndRegisterModules()
          mapper.writeValue(file,obj)
     }
 }

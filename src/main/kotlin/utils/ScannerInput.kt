@@ -1,6 +1,8 @@
 package utils
 
 import java.lang.NumberFormatException
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 import java.util.*
 
 /**
@@ -76,4 +78,34 @@ object ScannerInput {
         print(prompt)
         return Scanner(System.`in`).next()[0]
     }
+    /**
+     * Read a string from the user and convert it into a date.
+     * The date should be in the right format and if its not the user is prompted to enter it again
+     * @param prompt
+     * @return Date object read from the user
+     */
+    @JvmStatic
+    fun readNextDate(prompt: String?): LocalDate {
+        do{
+            try{
+                print(prompt)
+                val stringDate = Scanner(System. `in`).nextLine()
+                val date = LocalDate.parse(stringDate)
+                return date
+            }catch(e: DateTimeParseException){
+                System.err.println("\tEnter a valid date in the format(yyyy-MM-dd): ")
+            }
+        }while (true)
+
+    }
 }
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,9 @@ import controllers.NoteAPI
 import models.Note
 import mu.KotlinLogging
 import persistence.JSONSerializer
+import persistence.YAMLSerializer
 import persistence.XMLSerializer
+import utils.ScannerInput.readNextDate
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
@@ -11,6 +13,7 @@ import java.lang.System.exit
 private val logger = KotlinLogging.logger {}
 //private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
 private val noteAPI = NoteAPI(JSONSerializer(File("notes.json")))
+//private val noteAPI = NoteAPI(YAMLSerializer(File("notes.yaml1")))
 
 
 fun main(args: Array<String>) {
@@ -26,6 +29,7 @@ fun runMenu() {
             3  -> updateNote()
             4  -> deleteNote()
             5 -> archiveNote()
+            6 -> searchByTitle()
             20 -> save()
             21 -> load()
             0  -> exitApp()
@@ -42,11 +46,16 @@ fun runSubmenu(){
             3 -> listArchivedNote()
             4 -> listNotesByPriority()
             5 -> listNotesByCategory()
-            6 -> searchByTitle()
+            6 -> listNotesByStatus()
             0 -> runMenu()
             else -> System.out.println("Invalid option entered: ${option}")
         }
     } while (true)
+}
+
+fun listNotesByStatus() {
+    val sta = readNextLine("Enter the status: ")
+    println(noteAPI.listNotesByStatus(sta))
 }
 
 fun listNotesByCategory() {
@@ -59,6 +68,7 @@ fun listNotesByPriority() {
     println(noteAPI.listNotesBySelectedPriority(prio))
 
 }
+
 
 
 fun mainMenu() : Int {
@@ -93,6 +103,7 @@ fun subMenu() : Int {
          > |   3) List archived notes       |
          > |   4) List Notes of Priority    |
          > |   5) List Notes of category    |
+         > |   6) List Notes of status      |
          > ----------------------------------
          > |   0) Return to main menu       |
          > ----------------------------------
@@ -105,7 +116,11 @@ fun addNote(){
     val noteTitle = readNextLine("Enter a title for the note: ")
     val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
     val noteCategory = readNextLine("Enter a category for the note: ")
-    val isAdded = noteAPI.add(Note(noteTitle, notePriority, noteCategory, false))
+    val noteStatus = readNextLine("Enter the status for the note: ")
+    val noteDate = readNextDate("Enter the date for the note: ")
+    val noteContent = readNextLine("Enter a content for the note: ")
+    val isAdded = noteAPI.add(Note(noteTitle, notePriority, noteCategory, false,noteStatus,noteContent,noteDate)
+     )
 
     if (isAdded) {
         println("Added Successfully")
@@ -130,9 +145,13 @@ fun updateNote() {
             val noteTitle = readNextLine("Enter a title for the note: ")
             val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
             val noteCategory = readNextLine("Enter a category for the note: ")
+            val noteStatus = readNextLine("Enter the status for the note: ")
+            val noteDate = readNextDate("Enter the date for the note: ")
+            val noteContent = readNextLine("Enter a content for the note: ")
+
 
             //pass the index of the note and the new note details to NoteAPI for updating and check for success.
-            if (noteAPI.updateNote(indexToUpdate, Note(noteTitle, notePriority, noteCategory, false))){
+            if (noteAPI.updateNote(indexToUpdate, Note(noteTitle, notePriority, noteCategory, false,noteStatus,noteContent,noteDate))){
                 println("Update Successful")
             } else {
                 println("Update Failed")
