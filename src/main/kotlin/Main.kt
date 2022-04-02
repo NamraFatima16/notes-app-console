@@ -42,6 +42,7 @@ fun runSubmenu(){
             3 -> listArchivedNote()
             4 -> listNotesByPriority()
             5 -> listNotesByCategory()
+            6 -> searchByTitle()
             0 -> runMenu()
             else -> System.out.println("Invalid option entered: ${option}")
         }
@@ -71,6 +72,7 @@ fun mainMenu() : Int {
          > |   3) Update a note             |
          > |   4) Delete a note             |
          > |   5) Archive a note            |  
+         > |   6) Search for a note         | 
          > |   20) Save Notes               |
          > |   21) Load Notes               |
          > ----------------------------------
@@ -196,6 +198,15 @@ fun archiveNote() {
 }
 fun listArchivedNote(){
     println(noteAPI.listArchivedNotes())
+}
+fun searchByTitle(): String {
+    val title = readNextLine("Enter the title you want to search: ")
+    val result = noteAPI.searchByTitle(title)
+    return if (result.isEmpty()){
+        "No notes found by that $title title"
+    }
+    else result
+
 }
 
 fun exitApp(){

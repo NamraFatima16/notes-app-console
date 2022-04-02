@@ -150,5 +150,13 @@ class NoteAPI(serializerType: Serializer) {
         return false
     }
 
+    fun searchByTitle(title: String): String =
+             notes.stream().filter { note -> note.noteTitle.contains(title, true) }
+            .toList()
+            .joinToString(separator = "\n") { note -> notes.indexOf(note).toString() + ": " + note.toString() }
+
+
 
 }
+
+
