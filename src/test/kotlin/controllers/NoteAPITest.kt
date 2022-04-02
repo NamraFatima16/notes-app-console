@@ -383,6 +383,22 @@ class NoteAPITest {
             assertEquals(0, emptyNotes!!.numberOfNotesByPriority(1))
         }
     }
+    @Nested
+    inner class SearchMethods{
+        @Test
+        fun`searchByTitle returns notes with titles when present in note list`(){
+            val noteString = populatedNotes!!.searchByTitle("app").lowercase()
+            assertTrue(noteString.contains("code"))
+            assertTrue(noteString.contains("test "))
+
+        }
+        @Test
+        fun `searchByTitle return no notes when title does not exist in arraylist`(){
+            val noteString = populatedNotes!!.searchByTitle("java").lowercase()
+            assertTrue(noteString.isEmpty())
+
+        }
+    }
 
 
 
