@@ -23,3 +23,4 @@ We will be using JUnit automated testing on our code.
 - Added support for users to change status of notes from active to archived. 
 - Updated UI so that the list note option now opens a submenu, where the uers can chose what rtype of notes to list.
 - More JUnit test (AAARRGGHHHH!!!! I dont like testing)
+- Added a new list option notes can be listed by category now.
