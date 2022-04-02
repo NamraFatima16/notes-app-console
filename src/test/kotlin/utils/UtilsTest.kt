@@ -20,4 +20,3 @@ fun validRangeWorksWithNegativeTestData() {
     Assertions.assertFalse(validRange(1, 2, 1))
     Assertions.assertFalse(validRange(-1, -1, -2))
 }
-}
