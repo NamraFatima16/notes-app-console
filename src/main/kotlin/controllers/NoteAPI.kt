@@ -99,7 +99,7 @@ class NoteAPI(serializerType: Serializer){
             var noteBySel = ""
             for (i in notes.indices) {
                 if (notes[i].notePriority == priority) {
-                    noteBySel += "${i}: ${notes[i]}"
+                    noteBySel += "${i}: ${notes[i]} \n"
                 }
             }
             return noteBySel
@@ -117,6 +117,34 @@ class NoteAPI(serializerType: Serializer){
             return priNumber
 
     }
+
+    fun listNotesByCategory(category: String): String{
+        return if (numberOfNotesByCategory(category) == 0){
+            "No Notes of that category"
+        }else {
+            var listByCat = "category: $category \n"
+
+            for(i in notes.indices){
+                if(notes[i].noteCategory.equals(category,true)){
+                    listByCat += "${i}: ${notes[i]} \n"
+                }
+            }
+            return listByCat
+        }
+
+
+     }
+    fun numberOfNotesByCategory(category: String): Int{
+        //number of notes in a specific category
+        var catNumber = 0
+        for(note in notes){
+            if(note.noteCategory.equals(category,true)){
+                catNumber++
+            }
+        }
+        return catNumber
+    }
+
     fun deleteNote(indexToDelete: Int): Note? {
         return if (isValidListIndex(indexToDelete, notes)) {
             notes.removeAt(indexToDelete)

@@ -40,12 +40,24 @@ fun runSubmenu(){
             1 -> listNotes()
             2 -> listActiveNotes()
             3 -> listArchivedNote()
+            4 -> listNotesByPriority()
+            5 -> listNotesByCategory()
             0 -> runMenu()
             else -> System.out.println("Invalid option entered: ${option}")
         }
     } while (true)
 }
 
+fun listNotesByCategory() {
+    val cat = readNextLine("Enter the name of the category: ")
+    println(noteAPI.listNotesByCategory(cat))
+}
+
+fun listNotesByPriority() {
+    val prio = readNextInt("Enter the priority: ")
+    println(noteAPI.listNotesBySelectedPriority(prio))
+
+}
 
 
 fun mainMenu() : Int {
@@ -77,6 +89,8 @@ fun subMenu() : Int {
          > |   1) List all notes            |
          > |   2) List active notes         |
          > |   3) List archived notes       |
+         > |   4) List Notes of Priority    |
+         > |   5) List Notes of category    |
          > ----------------------------------
          > |   0) Return to main menu       |
          > ----------------------------------
