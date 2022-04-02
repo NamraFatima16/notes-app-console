@@ -143,8 +143,27 @@ class NoteAPITest {
             assertTrue(notesString.contains("test app"))
             assertTrue(notesString.contains("code app"))
         }
+        @Test
+        fun `listNotesByCategory returns no notes when arraylist is empty`(){
+            assertEquals(0, emptyNotes!!.numberOfNotes())
+            assertTrue(emptyNotes!!.listNotesByCategory("work").lowercase().contains("no notes"))
+        }
+        @Test
+        fun `listNotesByCategory return no notes when no notes of that category exist`(){
+            assertEquals(5, populatedNotes!!.numberOfNotes())
+            assertTrue(populatedNotes!!.listNotesByCategory("monster").lowercase().contains("no notes"))
+        }
+        @Test
+        fun `listNotesByCategory returns notes of category when arraylist has notes stored`(){
+            assertEquals(5,populatedNotes!!.numberOfNotes())
+            val notesString = populatedNotes!!.listNotesByCategory("work").lowercase()
+            assertTrue(notesString.contains("test app"))
+            assertTrue(notesString.contains("code app"))
+            assertTrue(notesString.contains("work"))
 
         }
+
+    }
 
     @Nested
     inner class DeleteNotes {
