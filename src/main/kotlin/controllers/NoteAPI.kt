@@ -71,25 +71,18 @@ class NoteAPI(serializerType: Serializer){
     }
 
     fun numberOfArchivedNotes(): Int {
-        //helper method to determine how many archived notes there are
-        var archivedNote = 0
-        for (note in notes){
-            if (note.isNoteArchived){
-                archivedNote++
-            }
-        }
-        return archivedNote
+        return notes.stream()
+            .filter{note: Note -> note.isNoteArchived}
+            .count()
+            .toInt()
+
     }
 
     fun numberOfActiveNotes(): Int {
-        //helper method to determine how many active notes there are
-        var activeNotes = 0
-        for(note in notes){
-            if(!note.isNoteArchived){
-                activeNotes++
-            }
-        }
-        return activeNotes
+        return notes.stream()
+            .filter{note: Note -> !note.isNoteArchived}
+            .count()
+            .toInt()
     }
 
     fun listNotesBySelectedPriority(priority: Int): String {
@@ -108,13 +101,11 @@ class NoteAPI(serializerType: Serializer){
 
     fun numberOfNotesByPriority(priority: Int): Int {
         //helper method to determine how many notes there are of a specific priority
-        var priNumber = 0
-        for(note in notes){
-            if(note.notePriority == priority){
-                priNumber++
-            }
-        }
-            return priNumber
+        return notes.stream()
+            .filter{note: Note -> note.notePriority == priority}
+            .count()
+            .toInt()
+
 
     }
 
@@ -136,13 +127,11 @@ class NoteAPI(serializerType: Serializer){
      }
     fun numberOfNotesByCategory(category: String): Int{
         //number of notes in a specific category
-        var catNumber = 0
-        for(note in notes){
-            if(note.noteCategory.equals(category,true)){
-                catNumber++
-            }
-        }
-        return catNumber
+
+        return notes.stream()
+            .filter{note: Note -> note.noteCategory.equals(category,true)}
+            .count()
+            .toInt()
     }
 
     fun deleteNote(indexToDelete: Int): Note? {
