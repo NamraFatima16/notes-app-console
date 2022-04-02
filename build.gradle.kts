@@ -32,4 +32,5 @@ dependencies {
     implementation("org.codehaus.jettison:jettison:1.4.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.2")
     implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2")
 }
