@@ -60,7 +60,16 @@ class NoteAPI(serializerType: Serializer) {
         else formatListString(notes.filter { note: Note -> note.noteCategory.equals(category,true)})
 
 
+
     fun numberOfNotesByCategory(category: String): Int = notes.count { note: Note -> note.noteCategory.equals(category,true)}
+
+    fun numberOfNotesByStatus(status: String): Int = notes.count{ note: Note -> note.noteStatus.equals(status,true)}
+
+    fun listNotesByStatus(status:String):
+            String =
+        if (numberOfNotesByStatus(status) == 0) "No Notes of $status"
+        else formatListString(notes.filter { note: Note -> note.noteStatus.equals(status,true)})
+
 
     fun deleteNote(indexToDelete: Int): Note? {
         return if (isValidListIndex(indexToDelete, notes)) {
@@ -77,6 +86,9 @@ class NoteAPI(serializerType: Serializer) {
             foundNote.noteTitle = note.noteTitle
             foundNote.notePriority = note.notePriority
             foundNote.noteCategory = note.noteCategory
+            foundNote.noteStatus = note.noteStatus
+            foundNote.noteContent = note.noteContent
+            foundNote.noteDate = note.noteDate
             return true
         }
 
