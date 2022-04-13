@@ -1,46 +1,40 @@
 import controllers.NoteAPI
 import models.Note
-import mu.KotlinLogging
 import persistence.JSONSerializer
-import persistence.YAMLSerializer
-import persistence.XMLSerializer
 import utils.ScannerInput.readNextDate
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
-import java.lang.System.exit
+import kotlin.system.exitProcess
 
-private val logger = KotlinLogging.logger {}
-//private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
+// private val logger = KotlinLogging.logger {}
+// private val noteAPI = NoteAPI(XMLSerializer(File("notes.xml")))
 private val noteAPI = NoteAPI(JSONSerializer(File("notes.json")))
-//private val noteAPI = NoteAPI(YAMLSerializer(File("notes.yaml1")))
+// private val noteAPI = NoteAPI(YAMLSerializer(File("notes.yaml1")))
 
-
-fun main(args: Array<String>) {
+fun main() {
     runMenu()
 }
 
 fun runMenu() {
     do {
-        val option = mainMenu()
-        when (option) {
-            1  -> addNote()
-            2  -> runSubmenu()
-            3  -> updateNote()
-            4  -> deleteNote()
+        when (val option = mainMenu()) {
+            1 -> addNote()
+            2 -> runSubmenu()
+            3 -> updateNote()
+            4 -> deleteNote()
             5 -> archiveNote()
             6 -> searchByTitle()
             20 -> save()
             21 -> load()
-            0  -> exitApp()
-            else -> System.out.println("Invalid option entered: ${option}")
+            0 -> exitApp()
+            else -> println("Invalid option entered: $option")
         }
     } while (true)
 }
-fun runSubmenu(){
-    do{
-        val option = subMenu()
-        when(option){
+fun runSubmenu() {
+    do {
+        when (val option = subMenu()) {
             1 -> listNotes()
             2 -> listActiveNotes()
             3 -> listArchivedNote()
@@ -48,7 +42,7 @@ fun runSubmenu(){
             5 -> listNotesByCategory()
             6 -> listNotesByStatus()
             0 -> runMenu()
-            else -> System.out.println("Invalid option entered: ${option}")
+            else -> println("Invalid option entered: $option")
         }
     } while (true)
 }
@@ -66,13 +60,11 @@ fun listNotesByCategory() {
 fun listNotesByPriority() {
     val prio = readNextInt("Enter the priority: ")
     println(noteAPI.listNotesBySelectedPriority(prio))
-
 }
 
-
-
-fun mainMenu() : Int {
-    return readNextInt(""" 
+fun mainMenu(): Int {
+    return readNextInt(
+        """ 
          > ----------------------------------
          > |        NOTE KEEPER APP         |
          > ----------------------------------
@@ -88,12 +80,13 @@ fun mainMenu() : Int {
          > ----------------------------------
          > |   0) Exit                      |
          > ----------------------------------
-         > ==>> """.trimMargin(">"))
+         > ==>> """.trimMargin(">")
+    )
 }
 
-
-fun subMenu() : Int {
-    return readNextInt(""" 
+fun subMenu(): Int {
+    return readNextInt(
+        """ 
          > ----------------------------------
          > |        NOTE KEEPER APP         |
          > ----------------------------------
@@ -107,20 +100,21 @@ fun subMenu() : Int {
          > ----------------------------------
          > |   0) Return to main menu       |
          > ----------------------------------
-         > ==>> """.trimMargin(">"))
-
+         > ==>> """.trimMargin(">")
+    )
 }
 
-fun addNote(){
-    //logger.info { "addNote() function invoked" }
+fun addNote() {
+    // logger.info { "addNote() function invoked" }
     val noteTitle = readNextLine("Enter a title for the note: ")
     val notePriority = readNextInt("Enter a priority (1-low, 2, 3, 4, 5-high): ")
     val noteCategory = readNextLine("Enter a category for the note: ")
     val noteStatus = readNextLine("Enter the status for the note: ")
     val noteDate = readNextDate("Enter the date for the note: ")
     val noteContent = readNextLine("Enter a content for the note: ")
-    val isAdded = noteAPI.add(Note(noteTitle, notePriority, noteCategory, false,noteStatus,noteContent,noteDate)
-     )
+    val isAdded = noteAPI.add(
+        Note(noteTitle, notePriority, noteCategory, false, noteStatus, noteContent, noteDate)
+    )
 
     if (isAdded) {
         println("Added Successfully")
@@ -129,17 +123,16 @@ fun addNote(){
     }
 }
 
-fun listNotes(){
-    //logger.info { "listNotes() function invoked" }
+fun listNotes() {
+    // logger.info { "listNotes() function invoked" }
     println(noteAPI.listAllNotes())
 }
 
-
 fun updateNote() {
-    //logger.info { "updateNotes() function invoked" }
+    // logger.info { "updateNotes() function invoked" }
     listNotes()
     if (noteAPI.numberOfNotes() > 0) {
-        //only ask the user to choose the note if notes exist
+        // only ask the user to choose the note if notes exist
         val indexToUpdate = readNextInt("Enter the index of the note to update: ")
         if (noteAPI.isValidIndex(indexToUpdate)) {
             val noteTitle = readNextLine("Enter a title for the note: ")
@@ -149,9 +142,8 @@ fun updateNote() {
             val noteDate = readNextDate("Enter the date for the note: ")
             val noteContent = readNextLine("Enter a content for the note: ")
 
-
-            //pass the index of the note and the new note details to NoteAPI for updating and check for success.
-            if (noteAPI.updateNote(indexToUpdate, Note(noteTitle, notePriority, noteCategory, false,noteStatus,noteContent,noteDate))){
+            // pass the index of the note and the new note details to NoteAPI for updating and check for success.
+            if (noteAPI.updateNote(indexToUpdate, Note(noteTitle, notePriority, noteCategory, false, noteStatus, noteContent, noteDate))) {
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -162,13 +154,13 @@ fun updateNote() {
     }
 }
 
-fun deleteNote(){
-    //logger.info { "deleteNotes() function invoked" }
+fun deleteNote() {
+    // logger.info { "deleteNotes() function invoked" }
     listNotes()
     if (noteAPI.numberOfNotes() > 0) {
-        //only ask the user to choose the note to delete if notes exist
+        // only ask the user to choose the note to delete if notes exist
         val indexToDelete = readNextInt("Enter the index of the note to delete: ")
-        //pass the index of the note to NoteAPI for deleting and check for success.
+        // pass the index of the note to NoteAPI for deleting and check for success.
         val noteToDelete = noteAPI.deleteNote(indexToDelete)
         if (noteToDelete != null) {
             println("Delete Successful! Deleted note: ${noteToDelete.noteTitle}")
@@ -192,12 +184,9 @@ fun load() {
     } catch (e: Exception) {
         System.err.println("Error reading from file: $e")
     }
-    fun listActiveNotes() {
-        println(noteAPI.listActiveNotes())
-    }
-
-
+    println(noteAPI.listActiveNotes())
 }
+
 fun listActiveNotes() {
     println(noteAPI.listActiveNotes())
 }
@@ -205,9 +194,9 @@ fun listActiveNotes() {
 fun archiveNote() {
     listActiveNotes()
     if (noteAPI.numberOfActiveNotes() > 0) {
-        //only ask the user to choose the note to archive if active notes exist
+        // only ask the user to choose the note to archive if active notes exist
         val indexToArchive = readNextInt("Enter the index of the note to archive: ")
-        //pass the index of the note to NoteAPI for archiving and check for success.
+        // pass the index of the note to NoteAPI for archiving and check for success.
         if (noteAPI.archiveNote(indexToArchive)) {
             println("Archive Successful!")
         } else {
@@ -215,20 +204,18 @@ fun archiveNote() {
         }
     }
 }
-fun listArchivedNote(){
+fun listArchivedNote() {
     println(noteAPI.listArchivedNotes())
 }
 fun searchByTitle(): String {
     val title = readNextLine("Enter the title you want to search: ")
     val result = noteAPI.searchByTitle(title)
-    return if (result.isEmpty()){
+    return result.ifEmpty {
         "No notes found by that $title title"
     }
-    else result
-
 }
 
-fun exitApp(){
+fun exitApp() {
     println("Exiting...bye")
-    exit(0)
+    exitProcess(0)
 }

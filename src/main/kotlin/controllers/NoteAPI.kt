@@ -2,8 +2,7 @@ package controllers
 
 import models.Note
 import persistence.Serializer
-import utils.utils.isValidListIndex
-
+import utils.Utils.isValidListIndex
 
 class NoteAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
@@ -23,14 +22,12 @@ class NoteAPI(serializerType: Serializer) {
     fun findNote(index: Int): Note? {
         return if (isValidListIndex(index, notes)) {
             notes[index]
-
         } else null
     }
 
     fun listActiveNotes(): String =
         if (numberOfActiveNotes() == 0) "No Active Notes Stored"
         else formatListString(notes.filter { note: Note -> !note.isNoteArchived })
-
 
     fun listArchivedNotes(): String =
         if (numberOfArchivedNotes() == 0) "No Archived Notes Stored"
@@ -41,30 +38,26 @@ class NoteAPI(serializerType: Serializer) {
     fun numberOfActiveNotes(): Int = notes.count { note: Note -> !note.isNoteArchived }
 
     fun listNotesBySelectedPriority(priority: Int):
-            String =
+        String =
         if (numberOfNotesByPriority(priority) == 0) "No Notes of that priority"
         else formatListString(notes.filter { note: Note -> note.notePriority == priority })
-
 
     fun numberOfNotesByPriority(priority: Int): Int = notes.count { note: Note -> note.notePriority == priority }
 
     fun listNotesByCategory(category: String):
 
-            String =
+        String =
         if (numberOfNotesByCategory(category) == 0) "No Notes of that category"
-        else formatListString(notes.filter { note: Note -> note.noteCategory.equals(category,true)})
+        else formatListString(notes.filter { note: Note -> note.noteCategory.equals(category, true) })
 
+    private fun numberOfNotesByCategory(category: String): Int = notes.count { note: Note -> note.noteCategory.equals(category, true) }
 
+    private fun numberOfNotesByStatus(status: String): Int = notes.count { note: Note -> note.noteStatus.equals(status, true) }
 
-    fun numberOfNotesByCategory(category: String): Int = notes.count { note: Note -> note.noteCategory.equals(category,true)}
-
-    fun numberOfNotesByStatus(status: String): Int = notes.count{ note: Note -> note.noteStatus.equals(status,true)}
-
-    fun listNotesByStatus(status:String):
-            String =
+    fun listNotesByStatus(status: String):
+        String =
         if (numberOfNotesByStatus(status) == 0) "No Notes of $status"
-        else formatListString(notes.filter { note: Note -> note.noteStatus.equals(status,true)})
-
+        else formatListString(notes.filter { note: Note -> note.noteStatus.equals(status, true) })
 
     fun deleteNote(indexToDelete: Int): Note? {
         return if (isValidListIndex(indexToDelete, notes)) {
@@ -73,10 +66,10 @@ class NoteAPI(serializerType: Serializer) {
     }
 
     fun updateNote(indexToUpdate: Int, note: Note?): Boolean {
-        //find the note object by the index number
+        // find the note object by the index number
         val foundNote = findNote(indexToUpdate)
 
-        //if the note exists, use the note details passed as parameters to update the found note in the ArrayList.
+        // if the note exists, use the note details passed as parameters to update the found note in the ArrayList.
         if ((foundNote != null) && (note != null)) {
             foundNote.noteTitle = note.noteTitle
             foundNote.notePriority = note.notePriority
@@ -87,16 +80,18 @@ class NoteAPI(serializerType: Serializer) {
             return true
         }
 
-        //if the note was not found, return false, indicating that the update was not successful
+        // if the note was not found, return false, indicating that the update was not successful
         return false
     }
 
     fun isValidIndex(index: Int): Boolean {
-        return isValidListIndex(index, notes);
+        return isValidListIndex(index, notes)
     }
 
     @Throws(Exception::class)
     fun load() {
+        // this cast is safe so we can safely supress the warning
+        @Suppress("UNCHECKED_CAST")
         notes = serializer.read() as ArrayList<Note>
     }
 
@@ -118,15 +113,13 @@ class NoteAPI(serializerType: Serializer) {
 
     fun searchByTitle(title: String): String =
         formatListString(
-             notes.stream().filter { note -> note.noteTitle.contains(title, true) }
-            .toList()
+            notes.stream().filter { note -> note.noteTitle.contains(title, true) }
+                .toList()
         )
 
-    fun formatListString(notesToFormat : List<Note>) : String =
+    private fun formatListString(notesToFormat: List<Note>): String =
         notesToFormat
-            .joinToString (separator = "\n") { note ->
-                notes.indexOf(note).toString() + ": " + note.toString() }
-
+            .joinToString(separator = "\n") { note ->
+                notes.indexOf(note).toString() + ": " + note.toString()
+            }
 }
-
-

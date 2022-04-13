@@ -1,9 +1,11 @@
+@file:Suppress("unused")
+
 package utils
 
 import java.lang.NumberFormatException
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
-import java.util.*
+import java.util.Scanner
 
 /**
  * This class provides methods for the robust handling of I/O using Scanner.
@@ -44,6 +46,7 @@ object ScannerInput {
      * @param prompt  The information printed to the console for the user to read
      * @return The number read from the user and verified as a double.
      */
+    @JvmStatic
     fun readNextDouble(prompt: String?): Double {
         do {
             try {
@@ -86,26 +89,14 @@ object ScannerInput {
      */
     @JvmStatic
     fun readNextDate(prompt: String?): LocalDate {
-        do{
-            try{
+        do {
+            try {
                 print(prompt)
-                val stringDate = Scanner(System. `in`).nextLine()
-                val date = LocalDate.parse(stringDate)
-                return date
-            }catch(e: DateTimeParseException){
+                val stringDate = Scanner(System.`in`).nextLine()
+                return LocalDate.parse(stringDate)
+            } catch (e: DateTimeParseException) {
                 System.err.println("\tEnter a valid date in the format(yyyy-MM-dd): ")
             }
-        }while (true)
-
+        } while (true)
     }
 }
-
-
-
-
-
-
-
-
-
-

@@ -7,19 +7,16 @@ import models.Note
 import java.io.File
 import java.lang.Exception
 
-
 class YAMLSerializer(private val file: File) : Serializer {
     @Throws(Exception::class)
     override fun read(): Any {
         val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule().findAndRegisterModules()
-        val obj: List<Note> = mapper.readValue(file)
-        return obj
+        return mapper.readValue<List<Note>>(file)
     }
 
     @Throws(Exception::class)
     override fun write(obj: Any?) {
         val mapper = ObjectMapper(YAMLFactory()).registerKotlinModule().findAndRegisterModules()
-         mapper.writeValue(file,obj)
+        mapper.writeValue(file, obj)
     }
 }
-
