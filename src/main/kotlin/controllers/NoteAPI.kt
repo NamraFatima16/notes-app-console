@@ -113,8 +113,8 @@ class NoteAPI(serializerType: Serializer) {
 
     fun searchByTitle(title: String): String =
         formatListString(
-            notes.stream().filter { note -> note.noteTitle.contains(title, true) }
-                .toList()
+            notes.filter { note -> note.noteTitle.contains(title, true) }
+                
         )
 
     private fun formatListString(notesToFormat: List<Note>): String =
